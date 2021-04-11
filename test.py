@@ -27,13 +27,13 @@ args = parser.parse_args()
 
 if __name__ == "__main__":
 
-    if args.type == "low":
+    if args.traffic == "low":
         t = 1
         c = 1
-    elif args.type == "mid":
+    elif args.traffic == "mid":
         t = 4
         c = 50
-    elif args.type == "high":
+    elif args.traffic == "high":
         t = 8
         c = 200
     else:
