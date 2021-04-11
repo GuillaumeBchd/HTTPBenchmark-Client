@@ -21,35 +21,52 @@ def url(arg_value):
 
 parser = argparse.ArgumentParser(description="Http benchmarking script that launch the wrk utility.")
 parser.add_argument("url", type=url, help="url that we want to test. (exemple: https://google.fr/)")
+parser.add_argument("-t", "--type", help="type of test that we want to launch.", default="mid", choices=["low", "mid", "high", "very high"])
 
 args = parser.parse_args()
 
 if __name__ == "__main__":
 
+    if args.type == "low":
+        t = 1
+        c = 1
+    elif args.type == "mid":
+        t = 4
+        c = 50
+    elif args.type == "high":
+        t = 8
+        c = 200
+    else:
+        t = 12
+        c = 400
+
     timer = 30
 
     start = time.time()
-    out = subprocess.Popen(['./wrk', '-t12', '-c400', '-d{}s'.format(timer), args.url],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT
-    )
-    
+    command = "./wrk -t{} -c{} -d{}s {}".format(t, c, timer, args.url)
+
+    out = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
     for i in tqdm(range(timer*100)):
         time.sleep(0.01)
 
     stdout, stderr = out.communicate()
 
-    now = datetime.now() 
+    now = datetime.now()
     now = now.strftime("%m-%d-%Y_%H-%M-%S")
 
     filename = "{}".format(now)
 
+    print(command)
+
     if stdout:
         print(stdout.decode("utf-8"))
         with open("./out/{}.txt".format(filename), 'w') as f:
+            f.write(command)
             f.write(stdout.decode("utf-8"))
     if stderr:
         print(stderr.decode("utf-8") )
         with open("./out/err_{}.txt".format(filename), 'w') as f:
+            f.write(command)
             f.write(stderr.decode("utf-8"))
 
