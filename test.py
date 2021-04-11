@@ -47,7 +47,10 @@ if __name__ == "__main__":
     c_arg = "-c{}".format(c)
     d_arg = "-d{}s".format(timer)
 
-    command = "./wrk {} {} {} {}".format(t_arg, c_arg, d_arg, args.url)
+    command = "wrk {} {} {} {}".format(t_arg, c_arg, d_arg, args.url)
+
+    print("Command :", command)
+    print("Traffic :", args.traffic)
 
     out = subprocess.Popen(['./wrk', t_arg, c_arg, d_arg, args.url], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
@@ -61,16 +64,16 @@ if __name__ == "__main__":
 
     filename = "{}".format(now)
 
-    print(command)
-
     if stdout:
         print(stdout.decode("utf-8"))
         with open("./out/{}.txt".format(filename), 'w') as f:
-            f.write(command)
+            f.write("Command :", command)
+            f.write("Traffic :", args.traffic)
             f.write(stdout.decode("utf-8"))
     if stderr:
         print(stderr.decode("utf-8"))
         with open("./out/err_{}.txt".format(filename), 'w') as f:
-            f.write(command)
+            f.write("Command :", command)
+            f.write("Traffic :", args.traffic)
             f.write(stderr.decode("utf-8"))
 
