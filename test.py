@@ -43,9 +43,13 @@ if __name__ == "__main__":
     timer = 30
 
     start = time.time()
-    command = "./wrk -t{} -c{} -d{}s {}".format(t, c, timer, args.url)
+    t_arg = "-t{}".format(t)
+    c_arg = "-c{}".format(c)
+    d_arg = "-d{}s".format(timer)
 
-    out = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    command = "./wrk {} {} {} {}".format(t_arg, c_arg, d_arg, args.url)
+
+    out = subprocess.Popen(['./wrk', t_arg, c_arg, d_arg, args.url], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     for i in tqdm(range(timer*100)):
         time.sleep(0.01)
@@ -65,7 +69,7 @@ if __name__ == "__main__":
             f.write(command)
             f.write(stdout.decode("utf-8"))
     if stderr:
-        print(stderr.decode("utf-8") )
+        print(stderr.decode("utf-8"))
         with open("./out/err_{}.txt".format(filename), 'w') as f:
             f.write(command)
             f.write(stderr.decode("utf-8"))
