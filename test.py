@@ -67,13 +67,13 @@ if __name__ == "__main__":
     if stdout:
         print(stdout.decode("utf-8"))
         with open("./out/{}.txt".format(filename), 'w') as f:
-            f.write("Command :", command)
-            f.write("Traffic :", args.traffic)
+            f.write("Command : {}".format(command))
+            f.write("Traffic : {}".format(args.traffic))
             f.write(stdout.decode("utf-8"))
     if stderr:
         print(stderr.decode("utf-8"))
         with open("./out/err_{}.txt".format(filename), 'w') as f:
-            f.write("Command :", command)
-            f.write("Traffic :", args.traffic)
+            f.write("Command : {}".format(command))
+            f.write("Traffic : {}".format(args.traffic))
             f.write(stderr.decode("utf-8"))
 
