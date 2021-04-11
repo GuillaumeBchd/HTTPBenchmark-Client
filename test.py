@@ -2,6 +2,8 @@ import argparse
 import subprocess
 import re
 import time
+from tqdm import tqdm
+from datetime import datetime
 
 def url(arg_value):
     regex = re.compile(
@@ -32,20 +34,22 @@ if __name__ == "__main__":
         stderr=subprocess.STDOUT
     )
     
-    print("Please wait {}s".format(timer))
-    end = time.time()
-    while end - start < timer :
-        remaining_time = int(timer - (end - start))+1
-        print('.', end='', flush=True)
-        time.sleep(1)
-        end = time.time()
-    
-    print('')
+    for i in tqdm(range(timer*100)):
+        time.sleep(0.01)
 
     stdout, stderr = out.communicate()
 
+    now = datetime.now() 
+    now = now.strftime("%m-%d-%Y_%H-%M-%S")
+
+    filename = "{}".format(now)
+
     if stdout:
         print(stdout.decode("utf-8"))
+        with open("./out/{}.txt".format(filename), 'w') as f:
+            f.write(stdout.decode("utf-8"))
     if stderr:
         print(stderr.decode("utf-8") )
+        with open("./out/err_{}.txt".format(filename), 'w') as f:
+            f.write(stderr.decode("utf-8"))
 
