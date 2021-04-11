@@ -21,7 +21,7 @@ def url(arg_value):
 
 parser = argparse.ArgumentParser(description="Http benchmarking script that launch the wrk utility.")
 parser.add_argument("url", type=url, help="url that we want to test. (exemple: https://google.fr/)")
-parser.add_argument("-t", "--type", help="type of test that we want to launch.", default="mid", choices=["low", "mid", "high", "very high"])
+parser.add_argument("-t", "--traffic", help="simulation of the traffic on the test.", default="mid", choices=["low", "mid", "high", "very high"])
 
 args = parser.parse_args()
 
